@@ -9,6 +9,12 @@ import os
 
 import platform
 
+import threading
+
+import pystray
+from PIL import Image
+from pystray import MenuItem as item
+
 # Lấy thông tin tên máy tính
 my_system = platform.uname()
 computerName = "Tên máy tính: " + my_system.node
@@ -23,7 +29,6 @@ hs = root.winfo_screenheight() # height of the screen
 path = Path(__file__).parent.absolute()
 # root.iconphoto(False, tk.PhotoImage(file='C:\\Users\\SPC\\TienIchVina\\icon.png'))
 root.iconphoto(False, tk.PhotoImage(file=path.__str__()+'\\icon.png'))
-
 
 # Lấy thông tin kết nối mạng của máy tính
 Dic = psutil.net_if_addrs()
@@ -299,6 +304,64 @@ y = (hs/2) - (h/2)
 # and where it is placed
 root.geometry('%dx%d+%d+%d' % (w, h, x, y))
 
+# image = Image.open(path.__str__()+'\\icon.png')
+# def after_click(icon, query):
+#     if str(query) == "GeeksforGeeks Website":
+#         print("The Best Place to learn anything Tech \
+#         Related -> https://www.geeksforgeeks.org/")
+#         # icon.stop()
+#     elif str(query) == "GeeksforGeeks Youtube":
+#         print("Youtube Channel of GeeksforGeeks \
+#         is -> https://www.youtube.com/@GeeksforGeeksVideos")
+#         # icon.stop()
+#     elif str(query) == "GeeksforGeeks LinkedIn":
+#         print("LinkedIn of GeeksforGeeks \
+#         is -> https://www.linkedin.com/company/geeksforgeeks/")
+#     elif str(query) == "Exit":
+#         icon.stop()
+# icon = pystray.Icon("GFG", image, "GeeksforGeeks", menu=pystray.Menu(
+#     pystray.MenuItem("GeeksforGeeks Website", after_click),
+#     pystray.MenuItem("GeeksforGeeks Youtube", after_click),
+#     pystray.MenuItem("GeeksforGeeks LinkedIn", after_click),
+#     pystray.MenuItem("Exit", after_click)))
+ 
+# icon.run()
+
+
+def quit_window(icon, item):
+    root.destroy()
+    icon.stop()
+
+def show_window(icon, item):
+    # icon.stop()
+    root.after(0,root.deiconify)
+
+def withdraw_window():  
+    root.withdraw()
+    image = Image.open(path.__str__()+'\\icon.png')
+    menu = (
+      item('Trang chủ', goHomepage),
+      pystray.Menu.SEPARATOR,
+      item('Show', show_window),
+      item('Quit', quit_window)
+    )
+    icon = pystray.Icon("name", image, "title", menu)
+    icon.run()
+
+
+
+
+image = Image.open(path.__str__()+'\\icon.png')
+menu = (
+  item('Trang chủ', goHomepage),
+  pystray.Menu.SEPARATOR,
+  item('Show', show_window),
+  item('Thoát', quit_window)
+)
+icon = pystray.Icon("name", image, "Ứng dụng", menu)
+# root.protocol('WM_DELETE_WINDOW', withdraw_window)
+
+threading.Thread(target=icon.run).start()
 
 # Start program
 root.mainloop()
@@ -308,3 +371,6 @@ root.mainloop()
 # '''
 # pyinstaller --onefile --add-binary='/System/Library/Frameworks/Tk.framework/Tk':'tk' --add-binary='/System/Library/Frameworks/Tcl.framework/Tcl':'tcl' part_manager.py
 # '''
+
+
+# https://github.com/moses-palmer/pystray/issues/49
