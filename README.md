@@ -11,3 +11,9 @@ Tiện ích viết bằng ngôn ngữ lập trình Python hỗ trợ cho các em
 
 Mở cửa sổ dòng lệnh CMD hoặc Terminal và gõ dòng lệnh sau:
 pip install -r requirements.txt
+
+
+
+
+## NOTE
+pip freeze > requirements.txt
