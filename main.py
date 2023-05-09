@@ -10,6 +10,7 @@ import os
 import platform
 
 import threading
+from pythonping import ping
 
 import pystray
 from PIL import Image
@@ -57,6 +58,19 @@ def openHelp():
     newWindow.geometry('%dx%d+%d+%d' % (w, h, x, y))
     Label(newWindow, text ="Chương trình được viết những dòng code đầu tiên vào ngày 07/03/2023 tại phòng lab 2").pack()
 
+
+def openPing():
+    newWindow = Toplevel(root)
+    newWindow.iconphoto(False, tk.PhotoImage(file=path.__str__()+'\\icon.png'))
+    newWindow.title("Ping app")
+    w = 500
+    h = 200
+    # calculate x and y coordinates for the Tk root window
+    x = (ws/2) - (w/2)
+    y = (hs/2) - (h/2)
+    newWindow.geometry('%dx%d+%d+%d' % (w, h, x, y))
+    Label(newWindow, text =ping('www.google.com', verbose=True)).pack()
+
 def openSysInfo():
     SysInfoWindow = Toplevel(root)
     SysInfoWindow.iconphoto(False, tk.PhotoImage(file=path.__str__()+'\\icon.png'))
@@ -94,6 +108,12 @@ edit.add_command(label ='Select All', command = None)
 edit.add_separator()
 edit.add_command(label ='Find...', command = None)
 edit.add_command(label ='Find again', command = None)
+
+app_ = Menu(menubar, tearoff = 0)
+menubar.add_cascade(label ='Ứng dụng', menu = app_)
+app_.add_command(label ='Ping google.com', command = openPing)
+app_.add_separator()
+app_.add_command(label ='Find...', command = None)
 
 help_ = Menu(menubar, tearoff = 0)
 menubar.add_cascade(label ='Trợ giúp', menu = help_)
